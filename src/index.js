@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const Keyboard = {
   elements: {
     title: null,
@@ -29,7 +30,7 @@ const Keyboard = {
     this.elements.textarea.classList.add('textarea');
     this.elements.main.classList.add('keyboard');
     this.elements.buttonsContainer.classList.add('keyboard__buttons');
-    this.elements.buttonsContainer.appendChild(this._createButtons());
+    this.elements.buttonsContainer.appendChild(this.createButtons());
     this.elements.title.innerHTML = 'Virtual Keyboard RS-School';
 
     // add to DOM
@@ -39,7 +40,7 @@ const Keyboard = {
     document.body.appendChild(this.elements.main);
   },
 
-  _createButtons() {
+  createButtons() {
     const fragment = document.createDocumentFragment();
     const buttonsArr = [
       '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'backspace',
@@ -49,6 +50,7 @@ const Keyboard = {
       'r_ctrl', 'alt', 'space', 'alt', 'l_ctrl',
     ];
 
+    // eslint-disable-next-line arrow-parens
     buttonsArr.forEach(btn => {
       const buttonElement = document.createElement('button');
       const insertBreak = ['backspace', 'p', 'enter', 'l_shift', 'l_ctrl'].indexOf(btn) !== -1;
@@ -57,15 +59,14 @@ const Keyboard = {
       buttonElement.setAttribute('type', 'button');
       buttonElement.classList.add('keyboard__button');
 
-      switch(btn) {
+      switch (btn) {
         case 'backspace':
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
 
           buttonElement.addEventListener('click', () => {
             this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
-            this._triggerEvent('oninput');
-          })
+          });
 
           break;
 
@@ -74,21 +75,19 @@ const Keyboard = {
           buttonElement.textContent = btn;
 
           buttonElement.addEventListener('click', () => {
-            this._toggleCaps();
+            this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
-          })
+          });
 
           break;
-        
+
         case 'enter':
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += '\n';
-            this._triggerEvent('oninput');
-            
-          })
+          });
 
           break;
 
@@ -98,25 +97,19 @@ const Keyboard = {
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += ' ';
-            this._triggerEvent('oninput');
-            
-          })
+          });
 
           break;
 
         default:
-          buttonElement.classList.add('keyboard__button--wide');
+          buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += this.properties.capsLock ? btn.toUpperCase() : btn.toLowerCase();
-
-            this._triggerEvent('oninput');
-            
-          })
+          });
 
           break;
-        
       }
 
       fragment.appendChild(buttonElement);
@@ -128,12 +121,11 @@ const Keyboard = {
     return fragment;
   },
 
-  _triggerEvent(handlerName) {
-
-  }
-
-  _toggleCaps() {
-
-  }
-  
+  toggleCaps() {
+    console.log('caps trigger');
+  },
 };
+
+window.addEventListener('DOMContentLoaded', () => {
+  Keyboard.init();
+});

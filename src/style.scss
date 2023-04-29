@@ -47,9 +47,15 @@ button {
     vertical-align: top;
     padding: 0;
     position: relative;
+    transition: all .1s linear;
+
+    &:hover {
+      background-color: #9c5151;
+    }
 
     &:active {
       background-color: #6e3232;
+      border-radius: 15px;
     }
 
     &--wide {

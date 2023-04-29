@@ -27,11 +27,14 @@ const Keyboard = {
 
     // add class to elements
     this.elements.title.classList.add('title');
+    this.elements.title.innerHTML = 'Virtual Keyboard RS-School';
     this.elements.textarea.classList.add('textarea');
+
     this.elements.main.classList.add('keyboard');
     this.elements.buttonsContainer.classList.add('keyboard__buttons');
     this.elements.buttonsContainer.appendChild(this.createButtons());
-    this.elements.title.innerHTML = 'Virtual Keyboard RS-School';
+
+    this.elements.buttons = this.elements.buttonsContainer.querySelectorAll('.keyboard__button');
 
     // add to DOM
     this.elements.main.appendChild(this.elements.buttonsContainer);
@@ -66,6 +69,7 @@ const Keyboard = {
 
           buttonElement.addEventListener('click', () => {
             this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+            this.triggerEvent('oninput');
           });
 
           break;
@@ -87,6 +91,7 @@ const Keyboard = {
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += '\n';
+            this.triggerEvent('oninput');
           });
 
           break;
@@ -97,6 +102,7 @@ const Keyboard = {
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += ' ';
+            this.triggerEvent('oninput');
           });
 
           break;
@@ -108,6 +114,7 @@ const Keyboard = {
           buttonElement.addEventListener('keydown', () => {
             this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+            this.triggerEvent('oninput');
           });
 
           break;
@@ -119,6 +126,7 @@ const Keyboard = {
           buttonElement.addEventListener('keydown', () => {
             this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+            this.triggerEvent('oninput');
           });
 
           break;
@@ -129,11 +137,12 @@ const Keyboard = {
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += this.properties.capsLock ? btn.toUpperCase() : btn.toLowerCase();
+            this.triggerEvent('oninput');
           });
 
           break;
       }
-
+      // create linebreak for keyboard
       fragment.appendChild(buttonElement);
       if (insertBreak) {
         fragment.appendChild(document.createElement('br'));
@@ -143,8 +152,18 @@ const Keyboard = {
     return fragment;
   },
 
+  triggerEvent(handlerName) {
+    console.log(`event trigger! event name: ${handlerName}`);
+  },
+
   toggleCaps() {
-    console.log('caps trigger');
+    this.properties.capsLock = !this.properties.capsLock;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const btn of this.elements.buttons) {
+      if (btn.textContent.length === 1) {
+        btn.textContent = this.properties.capsLock ? btn.textContent.toUpperCase() : btn.textContent.toLowerCase();
+      }
+    }
   },
 };
 

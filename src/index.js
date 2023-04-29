@@ -10,7 +10,6 @@ const Keyboard = {
 
   eventHandlers: {
     oninput: null,
-    onclose: null,
   },
 
   properties: {
@@ -41,6 +40,16 @@ const Keyboard = {
     document.body.appendChild(this.elements.title);
     document.body.appendChild(this.elements.textarea);
     document.body.appendChild(this.elements.main);
+
+    // print in textarea
+    document.querySelectorAll('.textarea').forEach((element) => {
+      element.addEventListener('focus', () => {
+        this.print(element.value, (currentValue) => {
+          // eslint-disable-next-line no-param-reassign
+          element.value = currentValue;
+        });
+      });
+    });
   },
 
   createButtons() {
@@ -153,7 +162,9 @@ const Keyboard = {
   },
 
   triggerEvent(handlerName) {
-    console.log(`event trigger! event name: ${handlerName}`);
+    if (typeof this.eventHandlers[handlerName] === 'function') {
+      this.eventHandlers[handlerName](this.properties.value);
+    }
   },
 
   toggleCaps() {
@@ -164,6 +175,11 @@ const Keyboard = {
         btn.textContent = this.properties.capsLock ? btn.textContent.toUpperCase() : btn.textContent.toLowerCase();
       }
     }
+  },
+
+  print(initialValue, oninput) {
+    this.properties.value = initialValue || '';
+    this.eventHandlers.oninput = oninput;
   },
 };
 

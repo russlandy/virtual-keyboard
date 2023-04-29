@@ -101,6 +101,28 @@ const Keyboard = {
 
           break;
 
+        case 'l_shift':
+          buttonElement.classList.add('keyboard__button--wide');
+          buttonElement.textContent = btn;
+
+          buttonElement.addEventListener('keydown', () => {
+            this.toggleCaps();
+            buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+          });
+
+          break;
+
+        case 'r_shift':
+          buttonElement.classList.add('keyboard__button--wide');
+          buttonElement.textContent = btn;
+
+          buttonElement.addEventListener('keydown', () => {
+            this.toggleCaps();
+            buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+          });
+
+          break;
+
         default:
           buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;

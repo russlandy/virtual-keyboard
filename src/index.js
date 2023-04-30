@@ -58,14 +58,14 @@ const Keyboard = {
       '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'backspace',
       'tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
       'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter',
-      'r_shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?', 'l_shift',
-      'r_ctrl', 'alt', 'space', 'alt', 'l_ctrl',
+      'l_shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?', '▲', 'r_shift',
+      'ctrl', 'alt', 'space', 'alt', 'ctrl', '◄', '▼', '►',
     ];
 
     // eslint-disable-next-line arrow-parens
     buttonsArr.forEach(btn => {
       const buttonElement = document.createElement('button');
-      const insertBreak = ['backspace', 'p', 'enter', 'l_shift', 'l_ctrl'].indexOf(btn) !== -1;
+      const insertBreak = ['backspace', 'p', 'enter', 'r_shift', '►'].indexOf(btn) !== -1;
 
       // add attributes
       buttonElement.setAttribute('type', 'button');
@@ -120,7 +120,12 @@ const Keyboard = {
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
 
-          buttonElement.addEventListener('keydown', () => {
+          buttonElement.addEventListener('mousedown' || 'keydown', () => {
+            this.toggleCaps();
+            buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+            this.triggerEvent('oninput');
+          });
+          buttonElement.addEventListener('mouseup', () => {
             this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
             this.triggerEvent('oninput');
@@ -132,9 +137,47 @@ const Keyboard = {
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
 
-          buttonElement.addEventListener('keydown', () => {
+          buttonElement.addEventListener('mousedown' || 'keydown', () => {
             this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+            this.triggerEvent('oninput');
+          });
+          buttonElement.addEventListener('mouseup', () => {
+            this.toggleCaps();
+            buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
+            this.triggerEvent('oninput');
+          });
+
+          break;
+
+        case 'ctrl':
+          buttonElement.classList.add('keyboard__button');
+          buttonElement.textContent = btn;
+
+          buttonElement.addEventListener('click', () => {
+            this.properties.value += '';
+            this.triggerEvent('oninput');
+          });
+
+          break;
+
+        case 'alt':
+          buttonElement.classList.add('keyboard__button');
+          buttonElement.textContent = btn;
+
+          buttonElement.addEventListener('click', () => {
+            this.properties.value += '';
+            this.triggerEvent('oninput');
+          });
+
+          break;
+
+        case 'tab':
+          buttonElement.classList.add('keyboard__button');
+          buttonElement.textContent = btn;
+
+          buttonElement.addEventListener('click', () => {
+            this.properties.value += '';
             this.triggerEvent('oninput');
           });
 

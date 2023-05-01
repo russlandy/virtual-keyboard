@@ -29,6 +29,8 @@ const Keyboard = {
     this.elements.title.innerHTML = 'Virtual Keyboard RS-School';
     this.elements.textarea.classList.add('textarea');
 
+    this.elements.textarea.setAttribute('autofocus', 'autofocus');
+
     this.elements.main.classList.add('keyboard');
     this.elements.buttonsContainer.classList.add('keyboard__buttons');
     this.elements.buttonsContainer.appendChild(this.createButtons());
@@ -84,7 +86,7 @@ const Keyboard = {
           break;
 
         case 'caps':
-          buttonElement.classList.add('keyboard__button--wide');
+          buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
 
           buttonElement.addEventListener('click', () => {
@@ -117,10 +119,10 @@ const Keyboard = {
           break;
 
         case 'l_shift':
-          buttonElement.classList.add('keyboard__button--wide');
+          buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
 
-          buttonElement.addEventListener('mousedown' || 'keydown', () => {
+          buttonElement.addEventListener('mousedown', () => {
             this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
             this.triggerEvent('oninput');
@@ -134,10 +136,10 @@ const Keyboard = {
           break;
 
         case 'r_shift':
-          buttonElement.classList.add('keyboard__button--wide');
+          buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
 
-          buttonElement.addEventListener('mousedown' || 'keydown', () => {
+          buttonElement.addEventListener('mousedown', () => {
             this.toggleCaps();
             buttonElement.classList.toggle('keyboard__button--active', this.properties.capsLock);
             this.triggerEvent('oninput');
@@ -173,11 +175,11 @@ const Keyboard = {
           break;
 
         case 'tab':
-          buttonElement.classList.add('keyboard__button');
+          buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
 
           buttonElement.addEventListener('click', () => {
-            this.properties.value += '';
+            this.properties.value += '  ';
             this.triggerEvent('oninput');
           });
 
@@ -191,7 +193,6 @@ const Keyboard = {
             this.properties.value += this.properties.capsLock ? btn.toUpperCase() : btn.toLowerCase();
             this.triggerEvent('oninput');
           });
-
           break;
       }
       // create linebreak for keyboard

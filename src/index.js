@@ -1,3 +1,6 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-plusplus */
 /* eslint-disable max-len */
 const Keyboard = {
   elements: {
@@ -47,10 +50,42 @@ const Keyboard = {
     document.querySelectorAll('.textarea').forEach((element) => {
       element.addEventListener('focus', () => {
         this.print(element.value, (currentValue) => {
-          // eslint-disable-next-line no-param-reassign
           element.value = currentValue;
         });
       });
+    });
+
+    const keys = document.querySelectorAll('.keyboard__button');
+    document.addEventListener('keydown', (e) => {
+      for (let i = 0; i < keys.length; i++) {
+        if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('keyname').toUpperCase()) {
+          keys[i].classList.add('keyboard__button--active');
+        }
+        if (e.code == 'ShiftLeft') {
+          document.getElementById('RightShift').classList.toggle('keyboard__button--active');
+        }
+        if (e.code == 'ShiftRight') {
+          document.getElementById('LeftShift').classList.toggle('keyboard__button--active');
+        }
+        if (e.code == 'CapsLock') {
+          document.getElementById('CapsLock').classList.toggle('keyboard__button--active');
+        }
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      for (let i = 0; i < keys.length; i++) {
+        // eslint-disable-next-line no-mixed-operators
+        if (e.key == keys[i].getAttribute('keyname') || e.key == keys[i].getAttribute('keyname').toUpperCase()) {
+          keys[i].classList.remove('keyboard__button--active');
+        }
+        if (e.code == 'ShiftLeft') {
+          document.getElementById('RightShift').classList.remove('keyboard__button--active');
+        }
+        if (e.code == 'ShiftRight') {
+          document.getElementById('LeftShift').classList.remove('keyboard__button--active');
+        }
+      }
     });
   },
 
@@ -61,7 +96,7 @@ const Keyboard = {
       'tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
       'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter',
       'l_shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?', '▲', 'r_shift',
-      'ctrl', 'alt', 'space', 'alt', 'ctrl', '◄', '▼', '►',
+      'l_ctrl', 'l_alt', 'space', 'r_alt', 'r_ctrl', '◄', '▼', '►',
     ];
 
     // eslint-disable-next-line arrow-parens
@@ -77,6 +112,7 @@ const Keyboard = {
         case 'backspace':
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'Backspace');
 
           buttonElement.addEventListener('click', () => {
             this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
@@ -88,6 +124,8 @@ const Keyboard = {
         case 'caps':
           buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'CapsLock');
+          buttonElement.setAttribute('id', 'CapsLock');
 
           buttonElement.addEventListener('click', () => {
             this.toggleCaps();
@@ -99,6 +137,7 @@ const Keyboard = {
         case 'enter':
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'Enter');
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += '\n';
@@ -110,6 +149,7 @@ const Keyboard = {
         case 'space':
           buttonElement.classList.add('keyboard__button--super-wide');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', ' ');
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += ' ';
@@ -121,6 +161,8 @@ const Keyboard = {
         case 'l_shift':
           buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'Shift');
+          buttonElement.setAttribute('id', 'LeftShift');
 
           buttonElement.addEventListener('mousedown', () => {
             this.toggleCaps();
@@ -138,6 +180,8 @@ const Keyboard = {
         case 'r_shift':
           buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'Shift');
+          buttonElement.setAttribute('id', 'RightShift');
 
           buttonElement.addEventListener('mousedown', () => {
             this.toggleCaps();
@@ -152,9 +196,23 @@ const Keyboard = {
 
           break;
 
-        case 'ctrl':
+        case 'l_ctrl':
           buttonElement.classList.add('keyboard__button');
-          buttonElement.textContent = btn;
+          buttonElement.textContent = 'ctrl';
+          buttonElement.setAttribute('keyname', 'Control');
+          buttonElement.setAttribute('id', 'LeftControl');
+
+          buttonElement.addEventListener('click', () => {
+            this.properties.value += '';
+            this.triggerEvent('oninput');
+          });
+
+          break;
+        case 'r_ctrl':
+          buttonElement.classList.add('keyboard__button');
+          buttonElement.textContent = 'ctrl';
+          buttonElement.setAttribute('keyname', 'Control');
+          buttonElement.setAttribute('id', 'RightControl');
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += '';
@@ -163,9 +221,24 @@ const Keyboard = {
 
           break;
 
-        case 'alt':
+        case 'l_alt':
+          buttonElement.classList.add('keyboard__button');
+          buttonElement.textContent = 'alt';
+          buttonElement.setAttribute('keyname', 'Alt');
+          buttonElement.setAttribute('id', 'LeftAlt');
+
+          buttonElement.addEventListener('click', () => {
+            this.properties.value += '';
+            this.triggerEvent('oninput');
+          });
+
+          break;
+
+        case 'r_alt':
           buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'Alt');
+          buttonElement.setAttribute('id', 'RightAlt');
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += '';
@@ -177,6 +250,7 @@ const Keyboard = {
         case 'tab':
           buttonElement.classList.add('keyboard__button--wide');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', 'Tab');
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += '  ';
@@ -188,6 +262,7 @@ const Keyboard = {
         default:
           buttonElement.classList.add('keyboard__button');
           buttonElement.textContent = btn;
+          buttonElement.setAttribute('keyname', btn);
 
           buttonElement.addEventListener('click', () => {
             this.properties.value += this.properties.capsLock ? btn.toUpperCase() : btn.toLowerCase();

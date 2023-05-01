@@ -69,6 +69,7 @@ const Keyboard = {
         }
         if (e.code == 'CapsLock') {
           document.getElementById('CapsLock').classList.toggle('keyboard__button--active');
+          this.toggleCaps();
         }
       }
     });
